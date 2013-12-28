@@ -1,0 +1,17 @@
+function [] = maskperimeter()
+%MASKPERIMETER Summary of this function goes here
+%   Detailed explanation goes here
+    perimeter=10;
+    a=0;
+    loadimage;
+    sz=size(image);
+    perimetermask=ones(sz);
+    for i=1:perimeter
+        for j=1:sz(1)
+            a+1;
+            perimetermask(j+a)=0;
+            
+        end
+        
+end
+
