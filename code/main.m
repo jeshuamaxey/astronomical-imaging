@@ -8,7 +8,7 @@ img_size = size(img_masked);
 
 disp('Commencing galaxy count')
 
-threshold = 25000; 			% count galaxies above this brightness
+threshold = 3480; 			% count galaxies above this brightness
 g_bg = 3480;       			% global background
 galaxies = countgalaxies(img_masked, img_size, threshold, g_bg);
 
