@@ -12,7 +12,7 @@ function [ aperture ] = makeaperture( img_masked, threshold, brightness, x, y, g
     %THIS IS IMPORTANT!!!!!
     %thing = ((brightness - g_bg)*0.05)+g_bg);
     % added to each variable aperture
-    lip = 5;
+    lip = 2;
 %   Extend in x-direction to find the radius of star in this direction
     edge_brightness = g_bg+1; %ensures while loops begin
     while edge_brightness > g_bg

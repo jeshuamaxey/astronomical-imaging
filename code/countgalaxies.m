@@ -2,27 +2,22 @@ function [ galaxies ] = countgalaxies( img_masked, img_size, threshold, g_bg )
 %COUNTGALAXIES Summary of this function goes here
 %   Detailed explanation goes here
     done = 0;
-    inst_zero_pt = 25.3;                                             %instrumental zero point
-    %aperture = 12;                                        % fixed aperture of 12px
-    % count = 0; ?
-    galaxies = zeros(1,4);                               % stores catalog of galaxies
-    i=0;                                                   % keeps track of positionin galaxies array
+    inst_zero_pt = 25.3;                                   %instrumental zero point
+    galaxies = zeros(1,4);                                 % stores catalog of galaxies (consider preallocating array improves efficiency)
+    i=0;                                                   % keeps track of position galaxies array
     
     while ~done
         coords = brightestpoint(img_masked);               % array of coordinates for the brightest point of the image
         [num_of_coords,w] = size(coords);                  % number of 'brightest points'
-        %num_of_coords
         y = coords(1);                                     %changed x and y order (should only go to 4000)
         x = coords(1+num_of_coords);
         brightness = img_masked(y,x);                      % brightness at brightest point
-        %brightness
-        % num_of_coords                                    % debugging. note: num_of_coords is NOT always = 1
         
         if (brightness <= threshold) | (brightness <= g_bg) % end while loop if all brightest points have been masked
             sprintf('Threshold = %d complete.\nCount = %d', threshold, size(galaxies,1))
             done = 1;                      
         else
-            % create variable apperture
+            % create variable aperture
             aperture = makeaperture(img_masked, threshold, brightness, x, y, g_bg);
 
             if(aperture > 1)
@@ -43,14 +38,13 @@ function [ galaxies ] = countgalaxies( img_masked, img_size, threshold, g_bg )
                 
                 % every 10 galaxies, output program update
                 if (mod(i,10)==0) & i > 0
-                    sprintf('Count = %d\nBrightness = %d\nCal. Mag. = %d', i,brightness, calibrated_magnitude)
+                    sprintf('Count = %d\nBrightness = %d\nCal. Mag. = %d\nAperture = %d', i, brightness, calibrated_magnitude, aperture)
                 end
                 % increment i
                 i=i+1;
             end
         end
     end
-
     fitswrite(img_masked, 'img/post_count.fits');
 end
 
