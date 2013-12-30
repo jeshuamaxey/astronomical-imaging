@@ -1,7 +1,7 @@
 unmasked_file_name = 'img/mosaic.fits';
 masked_file_name = 'img/img_masked.fits';
 % global background 
-g_bg = 3480;
+g_bg = 3422;
 
 disp('Loading data')
 % load in fits data
