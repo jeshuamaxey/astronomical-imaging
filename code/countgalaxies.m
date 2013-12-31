@@ -13,7 +13,7 @@ function [ galaxies ] = countgalaxies( img_masked, img_size, threshold, g_bg )
         x = coords(1+num_of_coords);
         brightpoint = img_masked(y,x);                      % brightpoint at brightest point
         
-        if (brightpoint <= threshold) | (brightpoint <= g_bg) % end while loop if all brightest points have been masked
+        if (brightpoint <= threshold) | (brightpoint <= g_bg*1.0001) % end while loop if all brightest points have been masked
             sprintf('Threshold = %d complete.\nCount = %d', threshold, size(galaxies,1))
             done = 1;                      
         else
