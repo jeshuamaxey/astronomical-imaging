@@ -10,8 +10,7 @@ function [ bleed_mask ] = maskbleed( image, img_size )
     y_min = [192,  425,  435,  310,  321,  217, 218,  2223, 2703, 3202, 3708];
     y_max = [4415, 435,  480,  321,  380,  270, 261,  2357, 2836, 3419, 3804];
     
-    l = size(x_min);
-    l = l(2);
+    l = size(x_min,2);
     
     for c=1:l
         for i=x_min(c):x_max(c)

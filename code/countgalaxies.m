@@ -11,14 +11,14 @@ function [ galaxies ] = countgalaxies( img_masked, img_size, threshold, g_bg )
         [num_of_coords,w] = size(coords);                  % number of 'brightest points'
         y = coords(1);                                     %changed x and y order (should only go to 4000)
         x = coords(1+num_of_coords);
-        brightness = img_masked(y,x);                      % brightness at brightest point
+        brightpoint = img_masked(y,x);                      % brightpoint at brightest point
         
-        if (brightness <= threshold) | (brightness <= g_bg) % end while loop if all brightest points have been masked
+        if (brightpoint <= threshold) | (brightpoint <= g_bg) % end while loop if all brightest points have been masked
             sprintf('Threshold = %d complete.\nCount = %d', threshold, size(galaxies,1))
             done = 1;                      
         else
             % create variable aperture
-            aperture = makeaperture(img_masked, threshold, brightness, x, y, g_bg);
+            aperture = makeaperture(img_masked, threshold, brightpoint, x, y, g_bg);
 
             if(aperture > 1)
                 brightness = galaxybrightness(img_masked, img_size, x, y, aperture/2);
@@ -38,7 +38,7 @@ function [ galaxies ] = countgalaxies( img_masked, img_size, threshold, g_bg )
                 
                 % every 10 galaxies, output program update
                 if (mod(i,10)==0) & i > 0
-                    sprintf('Count = %d\nBrightness = %d\nCal. Mag. = %d\nAperture = %d', i, brightness, calibrated_magnitude, aperture)
+                    sprintf('Count = %d\nBrightest Pixel = %d\nBrightness = %d\nCal. Mag. = %d\nAperture = %d', i,brightpoint, brightness, calibrated_magnitude, aperture)
                 end
                 % increment i
                 i=i+1;
