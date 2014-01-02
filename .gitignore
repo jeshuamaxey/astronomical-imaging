@@ -1,5 +1,5 @@
 report/
-code/data
-code/img
+code/data/
+code/img/
 old_code/*.fits
 
