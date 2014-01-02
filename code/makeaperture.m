@@ -21,8 +21,8 @@ function [ aperture ] = makeaperture( img_masked, threshold, brightness, x, y, g
     end
 
 %   Extend in y-direction to find the radius of star in this direction
+    edge_brightness = g_bg+1; %ensures while loops begin
     while (edge_brightness > g_bg) & (y < h)
-        edge_brightness = g_bg+1; %ensures while loops begin
         y=y+1;
         edge_brightness = median([img_masked(y,x-1),img_masked(y,x),img_masked(y,x+1)]);
     end
