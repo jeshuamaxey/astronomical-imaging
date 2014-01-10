@@ -1,8 +1,9 @@
-function [ galaxies ] = countgalaxies( img_masked, img_size, threshold, g_bg )
+function [ galaxies ] = countgalaxies( img_masked, img_size, threshold, g_bg, g_bg_sigma )
 %COUNTGALAXIES Summary of this function goes here
 %   Detailed explanation goes here
     done = 0;
     inst_zero_pt = 25.3;                                   %instrumental zero point
+    g_bg_plus_sigma = g_bg + 3*g_bg_sigma;                 % count galaxies above this brightness
     galaxies = zeros(1,4);                                 % stores catalog of galaxies (consider preallocating array improves efficiency)
     i=0;                                                   % keeps track of position galaxies array
     
@@ -13,14 +14,15 @@ function [ galaxies ] = countgalaxies( img_masked, img_size, threshold, g_bg )
         x = coords(1+num_of_coords);
         brightpoint = img_masked(y,x);                      % brightpoint at brightest point
         
-        if (brightpoint <= threshold) | (brightpoint <= g_bg*1.001) % end while loop if all brightest points have been masked
+        if (brightpoint <= threshold) | (brightpoint <= g_bg_plus_sigma) % end while loop if all brightest points have been masked
             sprintf('Threshold = %d complete.\nCount = %d', threshold, size(galaxies,1))
             done = 1;                      
         else
             % create variable aperture
-            aperture = makeaperture(img_masked, threshold, brightpoint, x, y, g_bg);
+            aperture = makeaperture(img_masked, threshold, brightpoint, x, y, g_bg_plus_sigma);
 
             if(aperture > 1)
+                % find brightness & cal mag
                 brightness = galaxybrightness(img_masked, img_size, x, y, aperture/2);
                 calibrated_magnitude = inst_zero_pt - 2.5*log10(brightness);
                 % store data

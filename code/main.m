@@ -8,9 +8,10 @@ img_size = size(img_masked);
 
 disp('Commencing galaxy count')
 												% runtime ~45mins
-threshold = 3460; 			% count galaxies above this brightness
-g_bg = 3460;       			% global background
-galaxies = countgalaxies(img_masked, img_size, threshold, g_bg);
+g_bg = 3418;       			% global background
+g_bg_sigma = 13;				% half width half maximum of the gaussian fitted to the pixel count distritbution curve
+threshold	= g_bg;				% used to stop the program early to produc half processed images
+galaxies = countgalaxies(img_masked, img_size, threshold, g_bg, g_bg_sigma);
 
 % output data to file
 

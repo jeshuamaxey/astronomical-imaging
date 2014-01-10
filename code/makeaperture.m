@@ -1,4 +1,4 @@
-function [ aperture ] = makeaperture( img_masked, threshold, brightness, x, y, g_bg )
+function [ aperture ] = makeaperture( img_masked, threshold, brightness, x, y, g_bg_plus_sigma )
 %MAKEAPERTURE
 %   Produces a variable aperture
     [h,w] = size(img_masked);
@@ -9,20 +9,18 @@ function [ aperture ] = makeaperture( img_masked, threshold, brightness, x, y, g
     % remember what the original coords of the star are
     original_x = x;
     original_y = y;
-    %THIS IS IMPORTANT!!!!!
-    %thing = ((brightness - g_bg)*0.05)+g_bg);
     % added to each variable aperture
     lip = 3;
 %   Extend in x-direction to find the radius of star in this direction
-    edge_brightness = g_bg+1; %ensures while loops begin
-    while (edge_brightness > g_bg) & (x < w)
+    edge_brightness = g_bg_plus_sigma+1; %ensures while loops begin
+    while (edge_brightness > g_bg_plus_sigma) & (x < w)
         x=x+1;
         edge_brightness = median([img_masked(y-1,x),img_masked(y,x),img_masked(y+1,x)]);
     end
 
 %   Extend in y-direction to find the radius of star in this direction
-    edge_brightness = g_bg+1; %ensures while loops begin
-    while (edge_brightness > g_bg) & (y < h)
+    edge_brightness = g_bg_plus_sigma+1; %ensures while loops begin
+    while (edge_brightness > g_bg_plus_sigma) & (y < h)
         y=y+1;
         edge_brightness = median([img_masked(y,x-1),img_masked(y,x),img_masked(y,x+1)]);
     end
